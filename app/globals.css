@@ -1,0 +1,289 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #080808;
+  --color-surface: #0f0f0f;
+  --color-surface-2: #151515;
+  --color-surface-3: #1b1b1b;
+  --color-line: #1f1f1f;
+  --color-line-strong: #2c2c2c;
+  --color-ink: #f4f4f5;
+  --color-soft: #c9c9cc;
+  --color-muted: #8b8b8f;
+  --color-faint: #5d5d61;
+  --color-mint: #5eead4;
+  --color-mint-2: #6ee7b7;
+  --color-gold: #fbbf24;
+  --color-gold-soft: #f5c27a;
+  --color-amber: #f59e0b;
+  --color-crimson: #e11d48;
+  --color-blood: #9f1239;
+
+  --font-sans: var(--ff-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--ff-mono), ui-monospace, "SFMono-Regular", monospace;
+  --font-pixel: var(--ff-pixel), ui-monospace, monospace;
+
+  --animate-glow-mint: glow-mint 2.4s ease-in-out infinite;
+  --animate-glow-gold: glow-gold 2.4s ease-in-out infinite;
+  --animate-flicker: flicker 4s steps(1) infinite;
+
+  @keyframes glow-mint {
+    0%, 100% { box-shadow: 0 0 22px 2px rgb(94 234 212 / 0.35), 0 0 60px 8px rgb(94 234 212 / 0.12), inset 0 -10px 30px rgb(0 0 0 / 0.18); }
+    50% { box-shadow: 0 0 34px 6px rgb(94 234 212 / 0.55), 0 0 90px 18px rgb(94 234 212 / 0.2), inset 0 -10px 30px rgb(0 0 0 / 0.18); }
+  }
+  @keyframes glow-gold {
+    0%, 100% { box-shadow: 0 0 24px 3px rgb(251 191 36 / 0.4), 0 0 70px 10px rgb(245 158 11 / 0.16), inset 0 -10px 30px rgb(120 53 15 / 0.25); }
+    50% { box-shadow: 0 0 38px 8px rgb(251 191 36 / 0.6), 0 0 110px 22px rgb(245 158 11 / 0.24), inset 0 -10px 30px rgb(120 53 15 / 0.25); }
+  }
+  @keyframes flicker {
+    0%, 100% { opacity: 1; }
+    92% { opacity: 1; }
+    93% { opacity: 0.6; }
+    94% { opacity: 1; }
+  }
+}
+
+:root {
+  color-scheme: dark;
+  /* Vision (Portal) theme tokens — overridden by .theme-antiportal */
+  --v-accent: #5eead4;
+  --v-accent-2: #fbbf24;
+  --v-label: #6fb8aa;
+  --v-text: #ececee;
+  --v-card: #0f0f0f;
+  --v-card-2: #141414;
+  --v-border: #1f1f1f;
+  --v-border-strong: #2c2c2c;
+  --v-glow: rgb(94 234 212 / 0.1);
+  --v-image-filter: none;
+}
+
+.theme-antiportal {
+  --v-accent: #c25454;
+  --v-accent-2: #8d939c;
+  --v-label: #a65a5a;
+  --v-text: #dcd6d6;
+  --v-card: #0d0a0a;
+  --v-card-2: #120d0d;
+  --v-border: #2a1818;
+  --v-border-strong: #3d2121;
+  --v-glow: rgb(150 30 30 / 0.16);
+  --v-image-filter: grayscale(0.65) brightness(0.62) contrast(1.08) sepia(0.12);
+}
+
+/* The page background lives on <html> so fixed "-z-10" atmospheres
+   (Antiportal vignette, boss glow) can sit between it and the content. */
+html {
+  background-color: var(--color-bg);
+  background-image:
+    radial-gradient(ellipse 80% 40% at 50% -10%, rgb(255 255 255 / 0.035), transparent 70%),
+    linear-gradient(90deg, #050505 0%, #0a0a0a 18%, #0a0a0a 82%, #050505 100%);
+  background-attachment: fixed;
+  color: var(--color-ink);
+}
+
+body {
+  min-height: 100dvh;
+  background: transparent;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: rgb(94 234 212 / 0.3);
+}
+
+/* Thin, discreet scrollbars (in a layer so .no-scrollbar can override it) */
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #2a2a2a transparent;
+  }
+}
+
+@layer components {
+  /* Tiny uppercase monospace label: "RACHA DE DÍAS" */
+  .label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-faint);
+    line-height: 1.4;
+  }
+
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: 1rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    border-radius: 0.6rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.55rem 0.95rem;
+    transition: background-color 150ms, border-color 150ms, color 150ms, transform 120ms, box-shadow 150ms;
+    user-select: none;
+  }
+  .btn:active {
+    transform: scale(0.97);
+  }
+  .btn:disabled {
+    opacity: 0.45;
+    pointer-events: none;
+  }
+  .btn-light {
+    background: #f4f4f5;
+    color: #0a0a0a;
+  }
+  .btn-light:hover {
+    background: #ffffff;
+    box-shadow: 0 0 20px rgb(255 255 255 / 0.15);
+  }
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid var(--color-line-strong);
+    color: var(--color-soft);
+  }
+  .btn-ghost:hover {
+    background: var(--color-surface-3);
+    color: var(--color-ink);
+  }
+  .btn-mono {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 0.5rem 0.8rem;
+    border-radius: 999px;
+  }
+
+  .field {
+    width: 100%;
+    background: #0b0b0b;
+    border: 1px solid var(--color-line-strong);
+    border-radius: 0.65rem;
+    padding: 0.7rem 0.9rem;
+    color: var(--color-ink);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 150ms, box-shadow 150ms;
+  }
+  .field::placeholder {
+    color: #55555a;
+  }
+  .field:focus {
+    border-color: #3d3d42;
+    box-shadow: 0 0 0 3px rgb(255 255 255 / 0.04);
+  }
+
+  /* Comfortable long-form text */
+  .prose-area {
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--v-text, var(--color-ink));
+  }
+  @media (min-width: 640px) {
+    .prose-area {
+      font-size: 17.5px;
+    }
+  }
+
+  /* Hover-only controls become always visible on touch screens */
+  .hover-reveal {
+    opacity: 0;
+    transition: opacity 150ms;
+  }
+  .group:hover .hover-reveal,
+  .group:focus-within .hover-reveal {
+    opacity: 1;
+  }
+  @media (hover: none) {
+    .hover-reveal {
+      opacity: 1;
+    }
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Film grain used by the Antiportal */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.09;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    border-radius: inherit;
+  }
+
+  /* Vision images: Antiportal shows them desaturated until hovered */
+  .vision-img {
+    filter: var(--v-image-filter);
+    transition: filter 450ms ease, transform 450ms ease;
+  }
+  .group:hover .vision-img {
+    filter: none;
+  }
+
+  .pixelated {
+    image-rendering: pixelated;
+    shape-rendering: crispEdges;
+  }
+
+  .chip {
+    display: inline-flex;
+    max-width: 100%;
+    align-items: center;
+    gap: 0.35rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-line-strong);
+    background: #121212;
+    padding: 0.2rem 0.6rem;
+    font-size: 11px;
+    line-height: 1.4;
+    color: var(--color-muted);
+    transition: color 150ms, border-color 150ms, background-color 150ms;
+  }
+  .chip:hover {
+    color: var(--color-ink);
+    border-color: #3a3a3a;
+  }
+
+  .flash-highlight {
+    animation: flash-highlight 2s ease-out;
+  }
+}
+
+@keyframes flash-highlight {
+  0%, 30% {
+    box-shadow: 0 0 0 2px rgb(255 255 255 / 0.55), 0 0 40px rgb(255 255 255 / 0.15);
+  }
+  100% {
+    box-shadow: 0 0 0 2px rgb(255 255 255 / 0), 0 0 40px rgb(255 255 255 / 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
